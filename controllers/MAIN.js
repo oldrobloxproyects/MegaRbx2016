@@ -1121,7 +1121,7 @@ module.exports = {
             let results = []
             for (let i = 0; i < users.length; i++) {
                 const user = users[i];
-                if (user.bannned)
+                if (user.banned)
                     continue;
                 results.push({
                     "UserId": user.userid,
