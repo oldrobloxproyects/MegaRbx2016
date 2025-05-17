@@ -11790,32 +11790,3 @@ publicIp = "${ip}"`
         });
     }
 }
-
-app.post('/presence/users', db.requireAuth2, async (req, res) => {
-    if (!db.getSiteConfig().backend.presenceEnabled) {
-        res.status(403).json({
-            error: "Presence is disabled"
-        });
-        return;
-    }
-    let data = [];
-    const userIds = req.body.userIds;
-    for (let i = 0; i < userIds.length; i++) {
-        const userId = userIds[i];
-        const user = await db.getUser(userId);
-        if (!user) continue;
-        const presenceType = (user.lastStudio || 0) > (db.getUnixTimestamp() - 30) ? 3 : (user.lastOnline || 0) > (db.getUnixTimestamp() - 60) ? (user.playing != 0 && user.playing != null) ? 2 : 1 : 0;
-        const gameid = req.user != null && db.areFriends(req.user.userid, user.userid) ? (user.playing != 0 && user.playing != null) ? user.playing : null : null
-        data.push({
-            "UserPresenceType": presenceType, // 0 = Offline, 1 = Website, 2 = Playing
-            "LastLocation": presenceType == 3 ? "Studio" : presenceType == 2 ? "Playing" : presenceType == 1 ? "Website" : "Offline",
-            "AbsolutePlaceUrl": null,
-            "PlaceId": gameid,
-            "GameId": gameid,
-            "IsGamePlayableOnCurrentDevice": true,
-            "UserId": user.userid,
-            "EndpointType": "Presence"
-        });
-    }
-    res.json(data);
-});
