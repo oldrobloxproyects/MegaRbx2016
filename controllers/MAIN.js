@@ -11810,8 +11810,8 @@ app.post('/presence/users', db.requireAuth2, async (req, res) => {
             "UserPresenceType": presenceType, // 0 = Offline, 1 = Website, 2 = Playing
             "LastLocation": presenceType == 3 ? "Studio" : presenceType == 2 ? "Playing" : presenceType == 1 ? "Website" : "Offline",
             "AbsolutePlaceUrl": null,
-            "PlaceId": placeId,
-            "GameId": gameId,
+            "PlaceId": gameid,
+            "GameId": gameid,
             "IsGamePlayableOnCurrentDevice": true,
             "UserId": user.userid,
             "EndpointType": "Presence"
